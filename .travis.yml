@@ -8,7 +8,6 @@ env:
   - COMMIT_AUTHOR_EMAIL: "nobody@coala.io"
 
 script:
-  - mkdir _site
-  - mkdir public
+  - mkdir _site public
   - python manage.py distill-local public --force
   - ./.ci/deploy.sh
