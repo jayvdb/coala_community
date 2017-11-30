@@ -1,0 +1,14 @@
+language: python
+python: 3.6
+
+script: bash 
+env:
+  global:
+  - ENCRYPTION_LABEL: "b28cce974bef"
+  - COMMIT_AUTHOR_EMAIL: "nobody@coala.io"
+
+script:
+  - mkdir _site
+  - mkdir public
+  - python manage.py distill-local public --force
+  - ./.ci/deploy.sh
