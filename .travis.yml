@@ -1,7 +1,6 @@
 language: python
 python: 3.6
 
-script: bash 
 env:
   global:
   - ENCRYPTION_LABEL: "b28cce974bef"
