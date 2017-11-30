@@ -4,6 +4,8 @@ set -e # Exit with nonzero exit code if anything fails
 SOURCE_BRANCH="master"
 TARGET_BRANCH="gh-pages"
 
+find public
+
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
 #if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
 #    echo "Skipping deploy; just doing a build."
@@ -22,11 +24,15 @@ cd out
 git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
 cd ..
 
+find out/
+
 # Clean out existing contents
 rm -rf out/**/* || exit 0
 
 # Copy public/ contents into out/
 cp -rp public/* out/
+
+find out/
 
 # Now let's go have some fun with the cloned repo
 cd out
