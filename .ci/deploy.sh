@@ -4,8 +4,6 @@ set -e # Exit with nonzero exit code if anything fails
 SOURCE_BRANCH="master"
 TARGET_BRANCH="gh-pages"
 
-find public
-
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
 #if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
 #    echo "Skipping deploy; just doing a build."
@@ -24,15 +22,11 @@ cd out
 git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
 cd ..
 
-find out/
-
 # Clean out existing contents
 rm -rf out/**/* || exit 0
 
 # Copy public/ contents into out/
 cp -rp public/* out/
-
-find out/
 
 # Now let's go have some fun with the cloned repo
 cd out
@@ -40,6 +34,7 @@ git config user.name "Travis CI"
 git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 # If there are no changes to the compiled out (e.g. this is a README update) then just bail.
+git add -A .
 if git diff --quiet; then
     echo "No changes to the output on this push; exiting."
     exit 0
@@ -47,7 +42,6 @@ fi
 
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
-git add -A .
 git commit -m "Deploy to GitHub Pages: ${SHA}"
 
 # Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc
