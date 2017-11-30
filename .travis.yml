@@ -3,7 +3,7 @@ python: 3.6
 
 env:
   global:
-  - ENCRYPTION_LABEL: "b28cce974bef"
+  - ENCRYPTION_LABEL: "defac9b1fa56"
   - COMMIT_AUTHOR_EMAIL: "nobody@coala.io"
 
 script:
