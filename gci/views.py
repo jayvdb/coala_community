@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 
 from .students import get_students, get_linked_students
+from logo import get_logo
 
 STUDENT_URL = (
     'https://codein.withgoogle.com/dashboard/task-instances/?'
@@ -14,6 +15,11 @@ def index(request):
     org_id = linked_students[0]['organization_id']
     org_name = linked_students[0]['organization_name']
     s = []
+
+    get_logo()
+
+    s.append('<link rel="shortcut icon" type="image/png" href="favicon.png"/>')
+    s.append('<img href="images/org_logo.png">')
     s.append('<h2>Welcome</h2>')
     s.append('Hello, world. You are at the {org_name} community GCI website.'
              .format(org_name=org_name))
