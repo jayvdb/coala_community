@@ -1,4 +1,6 @@
 from django.http import HttpResponse
+from datetime import datetime
+from calendar import timegm
 
 from .students import get_students, get_linked_students
 
@@ -28,4 +30,26 @@ def index(request):
                  '<a href="https://github.com/{username}">{username}</a>'
                  .format(student_url=student_url, student_id=student_id,
                          username=username))
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    s.append('</ul><i id="time" data-time="{unix}">'
+             'Last updated: {timestamp} (<span id="ago"></span>)</i>'
+             .format(unix=timegm(datetime.utcnow().utctimetuple()),
+                     timestamp=timestamp))
+    s.append('<script>'
+             'var time = document.getElementById("time");'
+             'var ago = document.getElementById("ago");'
+             'var timestamp = time.getAttribute("data-time");'
+             'var sec = ((new Date()).getTime() / 1000) - parseInt(timestamp);'
+             'var min = sec / 60;'
+             'var hour = min / 60;'
+             'var day = hour / 24;'
+             'var timeString = "";'
+             'if (day > 1) {'
+             '  timeString = `${parseInt(day)} days ago`;'
+             '} else {'
+             '  timeString = `${parseFloat(hour).toFixed(2)} hours ago`;'
+             '}'
+             'ago.innerHTML = timeString;'
+             '</script>')
+
     return HttpResponse('\n'.join(s))
