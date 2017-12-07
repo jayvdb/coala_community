@@ -26,8 +26,9 @@ def index(request):
         student_url = STUDENT_URL.format(org_id=org_id,
                                          student_id=student_id,
                                          )
-        s.append('<li><a href="{student_url}">{student_id}</a>: '
-                 '<a href="https://github.com/{username}">{username}</a>'
+        s.append('<li><a href="{student_url}">{student_id}</a>:<br />'
+                 '<div class="github-card" data-github="{username}" '
+                 'data-width="400" data-height="" data-theme="default"></div>'
                  .format(student_url=student_url, student_id=student_id,
                          username=username))
 
@@ -38,6 +39,8 @@ def index(request):
              .format(unix=timegm(datetime.utcnow().utctimetuple()),
                      timestamp=timestamp))
 
+    s.append('<script src="//cdn.jsdelivr.net/github-cards/latest/widget.js">'
+             '</script>')
     s.append('<script src="static/timeago.js"></script>')
     s.append('<script>loadTimeElements()</script>')
 
