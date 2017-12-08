@@ -1,7 +1,9 @@
 from django.http import HttpResponse
 from datetime import datetime
 from calendar import timegm
+from trav import Travis
 import requests
+import os
 
 from .students import get_students, get_linked_students
 
@@ -47,6 +49,14 @@ def index(request):
              '(<span id="ago" class="timeago"></span>)</i>'
              .format(unix=timegm(datetime.utcnow().utctimetuple()),
                      timestamp=timestamp))
+
+    if Travis.TRAVIS:
+        travis_link = ('https://travis-ci.org/{repo_slug}/builds/{build_id}'
+                       .format(repo_slug=Travis.REPO_SLUG,
+                               build_id=Travis.BUILD_ID))
+        s.append('<br /><small>This website was built automatically using '
+                 'Travis CI. A link to the build can be found <a href="{link}">'
+                 'here</a>.</small>'.format(link=travis_link))
 
     s.append('<script src="//cdn.jsdelivr.net/github-cards/latest/widget.js">'
              '</script>')
